@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: Arial, sans-serif;
+    margin: 100px auto;
+    padding: 20px;
+    max-width: 1280px;
+    background-color: #686d76;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #444;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+  }
+  
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .card {
+    padding: 50px;
+  }
