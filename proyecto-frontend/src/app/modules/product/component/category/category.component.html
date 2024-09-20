@@ -1,1 +1,18 @@
-<p>category works!</p>
+<table class="table table-hover">
+  <thead>
+    <tr class="table-dark">
+      <th scope="row">Category ID</th>
+      <td>Category</td>
+      <td>Tag</td>
+      <td>Status</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-light" *ngFor="let category of categories">
+      <td>{{ category.categoryId }}</td>
+      <td>{{ category.category }}</td>
+      <td>{{ category.tag }}</td>
+      <td>{{ category.status }}</td>
+    </tr>
+  </tbody>
+</table>
