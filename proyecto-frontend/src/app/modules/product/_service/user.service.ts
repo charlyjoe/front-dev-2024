@@ -6,7 +6,7 @@ import { api_dwb_uri } from '../../../shared/api-dwb-uri';
   providedIn: 'root',
 })
 export class UserService {
-  private source = '/user';
+  private source = '/region';
   constructor(private http: HttpClient) {}
   getUsers() {
     return this.http.get(api_dwb_uri + this.source);

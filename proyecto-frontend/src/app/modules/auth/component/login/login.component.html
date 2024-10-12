@@ -1,0 +1,32 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Login</h2>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <span class="help-block" style="color:red;" *ngIf="fg.username.invalid && fg.username.touched">Ingresa un
+        username</span>
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        formControlName="username"
+        name="username"
+        placeholder="Enter username"
+        required
+      />
+      <span class="help-block" style="color:red;" *ngIf="fg.password.invalid && fg.password.touched">Ingresa la
+        contraseña.</span>
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        name="password"
+        placeholder="Enter password"
+        required
+      />
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</div>
