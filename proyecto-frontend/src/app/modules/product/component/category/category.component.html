@@ -1,10 +1,10 @@
 <table>
   <thead>
-    <tr >
+    <tr>
       <th>Category ID</th>
-      <td>Category</td>
-      <td>Tag</td>
-      <td>Status</td>
+      <th>Category</th>
+      <th>Tag</th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
@@ -16,3 +16,98 @@
     </tr>
   </tbody>
 </table>
+
+<button
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#staticBackdrop"
+>
+  Nueva categoría
+</button>
+
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          Nueva categoría
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="category" class="form-label">Categoría</label>
+            <input
+              type="text"
+              class="form-control"
+              id="category"
+              formControlName="category"
+              [ngClass]="{
+                'is-invalid':
+                  categoryForm.get('category')?.invalid &&
+                  categoryForm.get('category')?.touched
+              }"
+            />
+            <div
+              *ngIf="
+                categoryForm.get('category')?.invalid &&
+                categoryForm.get('category')?.touched
+              "
+              class="invalid-feedback"
+            >
+              El campo categoría es obligatorio.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="tag" class="form-label">Tag</label>
+            <input
+              type="text"
+              class="form-control"
+              id="tag"
+              formControlName="tag"
+              [ngClass]="{
+                'is-invalid':
+                  categoryForm.get('tag')?.invalid &&
+                  categoryForm.get('tag')?.touched
+              }"
+            />
+            <div
+              *ngIf="
+                categoryForm.get('tag')?.invalid &&
+                categoryForm.get('tag')?.touched
+              "
+              class="invalid-feedback"
+            >
+              El campo tag es obligatorio.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
