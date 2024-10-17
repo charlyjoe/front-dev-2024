@@ -13,28 +13,34 @@
       <td>{{ category.category_id }}</td>
       <td>{{ category.category }}</td>
       <td>{{ category.tag }}</td>
-      <td><div 
-        [ngClass]="{
-          'status-circle': true, 
-          'status-active': category.status === 1, 
-          'status-inactive': category.status !== 1
-        }"
-        title="{{ category.status === 1 ? 'Activo' : 'Inactivo' }}">
-      </div>
-    </td>
+      <td>
+        <div
+          [ngClass]="{
+            'status-circle': true,
+            'status-active': category.status === 1,
+            'status-inactive': category.status !== 1
+          }"
+          title="{{ category.status === 1 ? 'Activo' : 'Inactivo' }}"
+        ></div>
+      </td>
       <td>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             Acciones
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" >Update</a></li>
-            <li><a class="dropdown-item" >Borrar</a></li>
-            <li><a class="dropdown-item" >Activar/desactivar</a></li>
+            <li><a class="dropdown-item">Update</a></li>
+            <li><a class="dropdown-item">Borrar</a></li>
+            <li><a class="dropdown-item">Activar/desactivar</a></li>
           </ul>
         </div>
       </td>
-      
     </tr>
   </tbody>
 </table>
@@ -70,7 +76,7 @@
           aria-label="Close"
         ></button>
       </div>
-      <form [formGroup]="categoryForm" (ngSubmit)="onSubmitUpdate()">
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
         <div class="modal-body">
           <div class="mb-3">
             <label for="category" class="form-label">Categoría</label>
@@ -118,6 +124,30 @@
               El campo tag es obligatorio.
             </div>
           </div>
+
+          <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <input
+              type="text"
+              class="form-control"
+              id="status"
+              formControlName="status"
+              [ngClass]="{
+                'is-invalid':
+                  categoryForm.get('status')?.invalid &&
+                  categoryForm.get('status')?.touched
+              }"
+            />
+            <div
+              *ngIf="
+                categoryForm.get('status')?.invalid &&
+                categoryForm.get('status')?.touched
+              "
+              class="invalid-feedback"
+            >
+              El campo status es obligatorio.
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -129,13 +159,7 @@
           </button>
           <button type="submit" class="btn btn-primary">Agregar</button>
         </div>
-        
       </form>
-      
     </div>
-    
   </div>
-  
 </div>
-
-
