@@ -1,18 +1,40 @@
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Category ID</th>
       <th>Category</th>
       <th>Tag</th>
       <th>Status</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let category of categories">
-      <td>{{ category.categoryId }}</td>
+      <td>{{ category.category_id }}</td>
       <td>{{ category.category }}</td>
       <td>{{ category.tag }}</td>
-      <td>{{ category.status }}</td>
+      <td><div 
+        [ngClass]="{
+          'status-circle': true, 
+          'status-active': category.status === 1, 
+          'status-inactive': category.status !== 1
+        }"
+        title="{{ category.status === 1 ? 'Activo' : 'Inactivo' }}">
+      </div>
+    </td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Acciones
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" >Update</a></li>
+            <li><a class="dropdown-item" >Borrar</a></li>
+            <li><a class="dropdown-item" >Activar/desactivar</a></li>
+          </ul>
+        </div>
+      </td>
+      
     </tr>
   </tbody>
 </table>
@@ -48,7 +70,7 @@
           aria-label="Close"
         ></button>
       </div>
-      <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmitUpdate()">
         <div class="modal-body">
           <div class="mb-3">
             <label for="category" class="form-label">Categoría</label>
@@ -107,7 +129,13 @@
           </button>
           <button type="submit" class="btn btn-primary">Agregar</button>
         </div>
+        
       </form>
+      
     </div>
+    
   </div>
+  
 </div>
+
+

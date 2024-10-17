@@ -8,6 +8,7 @@ import {
 import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category',
@@ -19,6 +20,8 @@ import { CommonModule } from '@angular/common';
 export class CategoryComponent implements OnInit {
   categories: Category[] = [];
   categoryForm: FormGroup;
+  category_id: number = 0;
+  swal = Swal;
 
   constructor(private service: CategoryService, private fb: FormBuilder) {
     this.categoryForm = this.fb.group({
@@ -27,24 +30,106 @@ export class CategoryComponent implements OnInit {
     });
   }
 
+  successMessage(message: string) {
+    this.swal.fire({
+      icon: 'success',
+      title: '¡Éxito!',
+      text: message,
+    });
+  }
+
+  errorMessage(message: string) {
+    this.swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: message,
+    });
+  }
+
   getCategories(): void {
-    this.categories = this.service.getCategories();
+    this.service.getCategories().subscribe({
+      next: (v) => {
+        this.categories = v;
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
   }
 
   ngOnInit(): void {
     this.getCategories();
   }
 
-  addCategory(): void {
-    if (this.categoryForm.valid) {
-      const newCategory: Category = {
-        categoryId: this.categories.length + 1,
-        category: this.categoryForm.value.category,
-        tag: this.categoryForm.value.tag,
-        status: 'active',
-      };
-      this.categories.push(newCategory);
-      this.categoryForm.reset();
+  onSubmit(): void {
+    this.category_id = this.categoryForm.value.id;
+    if (this.categoryForm.value.id === 0) {
+      this.onSubmitCreate();
+    } else {
+      this.onSubmitUpdate();
     }
+  }
+
+  onSubmitCreate(): void {
+    // if (this.categoryForm.valid) {
+    //   const newCategory: Category = {
+    //     category_id: this.categories.length + 1,
+    //     category: this.categoryForm.value.category,
+    //     tag: this.categoryForm.value.tag,
+    //     status: 'active',
+    //   };
+    //   this.categories.push(newCategory);
+    //   this.categoryForm.reset();
+    // }
+
+    this.service.createCategory(this.categoryForm.value).subscribe({
+      next: (v) => {
+        this.getCategories();
+        this.categoryForm.reset();
+        this.successMessage(v.message);
+      },
+      error: (e) => {
+        this.errorMessage(e.error.message);
+      },
+    });
+  }
+
+  onSubmitUpdate() {
+    this.service
+      .updateCategory(this.categoryForm.value, this.category_id)
+      .subscribe({
+        next: (v) => {
+          this.getCategories();
+          this.categoryForm.reset();
+          this.successMessage(v.message);
+        },
+        error: (e) => {
+          this.errorMessage(e.error.message);
+        },
+      });
+  }
+
+  disableCategory(id: number) {
+    this.service.deleteCategory(id).subscribe({
+      next: (v) => {
+        this.getCategories();
+        this.successMessage(v.message);
+      },
+      error: (e) => {
+        this.errorMessage(e.error!.message);
+      },
+    });
+  }
+
+  enableRegion(id: number) {
+    this.service.activateCategory(id).subscribe({
+      next: (v) => {
+        this.getCategories();
+        this.successMessage(v.message);
+      },
+      error: (e) => {
+        this.errorMessage(e.error!.message);
+      },
+    });
   }
 }
