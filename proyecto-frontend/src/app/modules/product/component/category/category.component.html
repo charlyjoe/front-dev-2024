@@ -35,9 +35,16 @@
             Acciones
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item">Update</a></li>
-            <li><a class="dropdown-item">Borrar</a></li>
-            <li><a class="dropdown-item">Activar/desactivar</a></li>
+            <li><a class="dropdown-item" data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop" (click)="updateCategory(category.category_id)">Update</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                (click)="category.status === 1 ? disableCategory(category.category_id) : enableCategory(category.category_id)"
+              >
+                {{ category.status === 1 ? 'Desactivar' : 'Activar' }}
+              </a>
+            </li>
           </ul>
         </div>
       </td>
@@ -45,14 +52,24 @@
   </tbody>
 </table>
 
-<button
+<div class="d-flex justify-content-between">
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop"
+  >
+    Nueva categoría
+  </button>
+
+  <button
   type="button"
   class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#staticBackdrop"
+  (click)="toggleCategoryFilter()"
 >
-  Nueva categoría
+  {{ showAllCategories ? 'Filtrar Activas' : 'Filtrar Todas' }}
 </button>
+</div>
 
 <div
   class="modal fade"

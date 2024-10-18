@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Asegúrate de importar ReactiveFormsModule
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css'],
 })
@@ -22,6 +22,8 @@ export class CategoryComponent implements OnInit {
   categoryForm: FormGroup;
   category_id: number = 0;
   swal = Swal;
+  isActiveList: boolean = false;
+  showAllCategories: boolean = false;
 
   constructor(private service: CategoryService, private fb: FormBuilder) {
     this.categoryForm = this.fb.group({
@@ -50,6 +52,27 @@ export class CategoryComponent implements OnInit {
   getCategories(): void {
     this.service.getCategories().subscribe({
       next: (v) => {
+        this.isActiveList = false;
+        this.categories = v;
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+  }
+  toggleCategoryFilter(): void {
+    this.showAllCategories = !this.showAllCategories;
+    if (this.showAllCategories) {
+      this.getCategories();
+    } else {
+      this.getActiveCategories();
+    }
+  }
+
+  getActiveCategories(): void {
+    this.service.getActiveCategories().subscribe({
+      next: (v) => {
+        this.isActiveList = true;
         this.categories = v;
       },
       error: (e) => {
@@ -68,23 +91,14 @@ export class CategoryComponent implements OnInit {
     } else {
       this.onSubmitUpdate();
     }
+
+    this.category_id = 0;
   }
 
   onSubmitCreate(): void {
-    // if (this.categoryForm.valid) {
-    //   const newCategory: Category = {
-    //     category_id: this.categories.length + 1,
-    //     category: this.categoryForm.value.category,
-    //     tag: this.categoryForm.value.tag,
-    //     status: 'active',
-    //   };
-    //   this.categories.push(newCategory);
-    //   this.categoryForm.reset();
-    // }
-    console.log(this.categoryForm.value);
     this.service.createCategory(this.categoryForm.value).subscribe({
       next: (v) => {
-        this.getCategories();
+        this.resetCategories();
         this.categoryForm.reset();
         this.successMessage(v.message);
       },
@@ -99,7 +113,7 @@ export class CategoryComponent implements OnInit {
       .updateCategory(this.categoryForm.value, this.category_id)
       .subscribe({
         next: (v) => {
-          this.getCategories();
+          this.resetCategories();
           this.categoryForm.reset();
           this.successMessage(v.message);
         },
@@ -112,7 +126,7 @@ export class CategoryComponent implements OnInit {
   disableCategory(id: number) {
     this.service.deleteCategory(id).subscribe({
       next: (v) => {
-        this.getCategories();
+        this.resetCategories();
         this.successMessage(v.message);
       },
       error: (e) => {
@@ -124,12 +138,24 @@ export class CategoryComponent implements OnInit {
   enableCategory(id: number) {
     this.service.activateCategory(id).subscribe({
       next: (v) => {
-        this.getCategories();
+        this.resetCategories();
         this.successMessage(v.message);
       },
       error: (e) => {
         this.errorMessage(e.error!.message);
       },
     });
+  }
+
+  updateCategory(id: number) {
+    this.category_id = id;
+  }
+
+  resetCategories() {
+    if (this.isActiveList) {
+      this.getActiveCategories();
+    } else {
+      this.getCategories();
+    }
   }
 }
