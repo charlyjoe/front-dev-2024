@@ -1,16 +1,16 @@
 export class Category {
-  categoryId: number;
+  category_id: number;
   category: string;
   tag: string;
-  status: string;
+  status: number;
 
   constructor(
-    categoryId: number,
+    category_id: number,
     category: string,
     tag: string,
-    status: string
+    status: number
   ) {
-    this.categoryId = categoryId;
+    this.category_id = category_id;
     this.category = category;
     this.tag = tag;
     this.status = status;
