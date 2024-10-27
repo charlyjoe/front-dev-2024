@@ -6,8 +6,9 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgxPhotoEditorModule } from 'ngx-photo-editor';
 import { authInterceptor } from './core/auth.interceptor';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     importProvidersFrom(FormsModule),
+    importProvidersFrom(NgxPhotoEditorModule),
     provideHttpClient(withInterceptors([authInterceptor])),
+    importProvidersFrom(FontAwesomeModule),
   ],
 };

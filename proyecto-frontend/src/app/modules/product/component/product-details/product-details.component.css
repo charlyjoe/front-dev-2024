@@ -1,0 +1,19 @@
+.carousel-del {
+  width: 100%;
+}
+.carousel-inner img {
+  object-fit: cover;
+}
+
+.carousel-del .btn {
+  max-width: 80%;
+}
+
+.carousel-indicators .indicator {
+  background-color: #333;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%);
+}
