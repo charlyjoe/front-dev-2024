@@ -30,7 +30,7 @@
   text-align: center;
   width: 100%;
 }
-.navbar-items{
+.navbar-items {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -56,12 +56,11 @@
   border: none;
 }
 
-
 table {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  background-color: #393E46 !important;
+  background-color: #393e46 !important;
   color: white;
   border: white 3px solid;
 }
@@ -71,6 +70,14 @@ td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  background-color: #393E46 !important;
+  background-color: #393e46 !important;
   color: white;
+}
+
+.color-red {
+  color: red;
+}
+
+.modal-form {
+  width: 600px;
 }

@@ -30,7 +30,6 @@ export class CategoryComponent implements OnInit {
     this.categoryForm = this.fb.group({
       category: ['', Validators.required],
       tag: ['', Validators.required],
-      status: ['', Validators.required],
     });
   }
 
@@ -89,7 +88,6 @@ export class CategoryComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-    console.log(this.category_id);
     if (this.categoryForm.invalid) return;
     if (this.category_id === 0) {
       this.onSubmitCreate();
@@ -115,6 +113,7 @@ export class CategoryComponent implements OnInit {
   }
 
   onSubmitUpdate(): void {
+    console.log(this.categoryForm.value);
     this.service
       .updateCategory(this.categoryForm.value, this.category_id)
       .subscribe({
@@ -158,7 +157,6 @@ export class CategoryComponent implements OnInit {
     this.categoryForm.reset();
     this.categoryForm.controls['category'].setValue(category.category);
     this.categoryForm.controls['tag'].setValue(category.tag);
-    this.categoryForm.controls['status'].setValue(category.status);
   }
 
   createCategory(): void {

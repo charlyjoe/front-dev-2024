@@ -170,7 +170,7 @@ export class ProductComponent implements OnInit {
     this.form.reset();
     this.form.controls['product'].setValue(product.product);
     this.form.controls['gtin'].setValue(product.gtin);
-    this.form.controls['price'].setValue(product.status);
+    this.form.controls['price'].setValue(product.price);
   }
 
   resetProducts() {
@@ -190,6 +190,7 @@ export class ProductComponent implements OnInit {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
         this.categories = v;
+        console.log(v);
       },
       error: (e) => {
         console.log(e);

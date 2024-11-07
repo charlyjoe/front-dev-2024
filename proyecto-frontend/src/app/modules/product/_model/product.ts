@@ -6,6 +6,7 @@ export class Product {
   description: string = '';
   price: number = 0;
   stock: number = 0;
-  category: number = 0;
+  category_id: number = 0;
+  category: string = '';
   status: number = 0;
 }

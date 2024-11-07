@@ -85,6 +85,7 @@ export class ProductDetailsComponent {
     this.productService.getProduct(this.gtin).subscribe({
       next: (v) => {
         this.product = v;
+        console.log(this.product);
         this.getProductImages();
       },
       error: (e) => {
@@ -99,6 +100,7 @@ export class ProductDetailsComponent {
       .subscribe({
         next: (v) => {
           this.productImages = v;
+          console.log(v);
         },
         error: (e) => {
           this.errorMessage(e.message);

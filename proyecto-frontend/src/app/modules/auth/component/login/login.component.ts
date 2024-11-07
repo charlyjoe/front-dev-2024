@@ -40,7 +40,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/secured');
+      this.router.navigateByUrl('/category');
     } else {
       this.router.navigateByUrl('/login');
     }
@@ -53,8 +53,6 @@ export class LoginComponent {
       password: string;
     };
 
-    console.log(loginFormValue);
-
     this.subscriptions.push(
       this.authenticationService.login(loginFormValue).subscribe(
         (response: HttpResponse<LoginResponse>) => {
@@ -62,7 +60,7 @@ export class LoginComponent {
             const token = response.body.token;
             this.authenticationService.saveToken(token);
             this.authenticationService.addUserToLocalCache(response.body);
-            this.router.navigateByUrl('/secured');
+            this.router.navigateByUrl('/category');
             this.showLoading = false;
           } else {
             if (response.body === null) {

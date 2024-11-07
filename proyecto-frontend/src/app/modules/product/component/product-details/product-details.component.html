@@ -1,25 +1,20 @@
 <div class="card">
   <div class="card-header">
     <div class="row">
-      <div class="col-md">
-        <button
-          class="btn btn-secondary btn-return"
-          (click)="redirect('product')"
-        >
-          <i class="ph ph-arrow-circle-left icon-text-button"></i>
-          Regresar
+      <div class="col-md-auto">
+        <button class="btn btn-dark btn-return" (click)="redirect('product')">
+          <i class="ph ph-arrow-circle-left icon-text-button"></i> Regresar
         </button>
       </div>
 
-      <div class="col-md">
+      <div class="col text-end">
         <button
-          class="btn btn-secondary edit-product"
+          class="btn btn-outline-light"
           (click)="updateProduct()"
           data-bs-toggle="modal"
           data-bs-target="#modalForm"
         >
-          <i class="ph ph-note-pencil icon-text-button"></i>
-          Editar producto
+          <i class="ph ph-note-pencil icon-text-button"></i> Editar producto
         </button>
       </div>
     </div>
@@ -28,17 +23,15 @@
 
   <div class="card-body">
     <div class="row">
-      <!-- product image  -->
-
       <div class="col-md-4">
-        <div class="card">
+        <div>
           <div
-            *ngIf="productImages.length > 0"
+            *ngIf="productImages && productImages.length > 0; else noImage"
             id="carouselExampleIndicators"
             class="carousel slide"
             data-bs-ride="true"
           >
-            <div class="carousel-indicators">
+            <div *ngIf="productImages.length > 1" class="carousel-indicators">
               <button
                 *ngFor="let item of productImages; let i = index"
                 type="button"
@@ -66,17 +59,14 @@
                   </button>
                 </div>
                 <img
-                  src="{{
-                    prod.image !== ''
-                      ? prod.image
-                      : 'assets/no-product-image.png'
-                  }}"
+                  [src]="prod.image"
                   class="d-block w-100"
-                  alt="..."
+                  alt="Imagen del producto"
                 />
               </div>
             </div>
             <button
+              *ngIf="productImages.length > 1"
               class="carousel-control-prev"
               type="button"
               data-bs-target="#carouselExampleIndicators"
@@ -86,9 +76,10 @@
                 class="carousel-control-prev-icon"
                 aria-hidden="true"
               ></span>
-              <span class="visually-hidden">Previous</span>
+              <span class="visually-hidden">Previo</span>
             </button>
             <button
+              *ngIf="productImages.length > 1"
               class="carousel-control-next"
               type="button"
               data-bs-target="#carouselExampleIndicators"
@@ -98,9 +89,18 @@
                 class="carousel-control-next-icon"
                 aria-hidden="true"
               ></span>
-              <span class="visually-hidden">Next</span>
+              <span class="visually-hidden">Siguiente</span>
             </button>
           </div>
+
+          <ng-template #noImage>
+            <img
+              src="./assets/no-product-image.png"
+              class="d-block w-100"
+              alt="Sin imagen"
+            />
+          </ng-template>
+
           <div class="edit-product-image text-center">
             <label for="uploadImage" class="cursor-pointer">
               <input
@@ -116,44 +116,29 @@
         </div>
       </div>
 
-      <!-- product data  -->
-
       <div class="col-md-8">
-        <div class="card">
+        <div>
           <div class="card-body-product">
-            <!-- product -->
-
-            <div class="product-title">
-              {{ product.product }}
-            </div>
+            <div class="product-title">{{ product.product }}</div>
 
             <table class="table">
               <tbody>
-                <!-- gtin -->
                 <tr>
                   <th class="col-md-4">GTIN</th>
                   <td>{{ product.gtin }}</td>
                 </tr>
-
-                <!-- description -->
                 <tr>
                   <th class="col-md-4">Descripción</th>
                   <td>{{ product.description }}</td>
                 </tr>
-
-                <!-- price -->
                 <tr>
                   <th class="col-md-4">Precio</th>
                   <td>{{ product.price }}</td>
                 </tr>
-
-                <!-- stock -->
                 <tr>
-                  <th class="col-md-4">Stock</th>
+                  <th class="col-md-4">Inventario</th>
                   <td>{{ product.stock }}</td>
                 </tr>
-
-                <!-- category_id -->
                 <tr>
                   <th class="col-md-4">Categoría</th>
                   <td>{{ product.category }}</td>
@@ -165,8 +150,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal form  -->
 
   <div
     class="modal fade"
@@ -189,17 +172,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- form  -->
-
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="row">
-              <!-- gtin  -->
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="gtin"
-                    >GTIN <span class="color-red">*</span>
-                  </label>
+                    >GTIN <span class="color-red">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -218,13 +197,11 @@
                 </div>
               </div>
 
-              <!-- product  -->
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="product"
-                    >Producto <span class="color-red">*</span>
-                  </label>
+                    >Producto <span class="color-red">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -243,13 +220,11 @@
                 </div>
               </div>
 
-              <!-- price  -->
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="price"
-                    >Precio <span class="color-red">*</span>
-                  </label>
+                    >Precio <span class="color-red">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -268,19 +243,17 @@
                 </div>
               </div>
 
-              <!-- stock  -->
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="stock"
-                    >Cantidad de productos <span class="color-red">*</span>
-                  </label>
+                    >Inventario <span class="color-red">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
                     formControlName="stock"
                     id="stock"
-                    placeholder="Número de stock del producto..."
+                    placeholder="Inventario del producto..."
                     [ngClass]="{
                       'is-invalid': form.controls['stock'].errors && submitted
                     }"
@@ -293,13 +266,11 @@
                 </div>
               </div>
 
-              <!-- category_id  -->
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="category_id"
-                    >Categoría <span class="color-red">*</span>
-                  </label>
+                    >Categoría <span class="color-red">*</span></label
+                  >
                   <select
                     class="form-select"
                     formControlName="category_id"
@@ -309,17 +280,15 @@
                         form.controls['category_id'].errors && submitted
                     }"
                   >
-                    <option [ngValue]="null" hidden>
-                      Selecciona una categoría...
+                    <option value="" disabled selected>
+                      Selecciona una categoría
                     </option>
-                    <ng-container *ngFor="let category of categories">
-                      <option
-                        *ngIf="category.status == 1"
-                        [ngValue]="category.category_id"
-                      >
-                        {{ category.category }}
-                      </option>
-                    </ng-container>
+                    <option
+                      *ngFor="let item of categories"
+                      [value]="item.category_id"
+                    >
+                      {{ item.category }}
+                    </option>
                   </select>
                   <div *ngIf="form.controls['category_id'].errors && submitted">
                     <small class="color-red"
@@ -329,37 +298,34 @@
                 </div>
               </div>
 
-              <!-- description  -->
-
-              <div class="form-group">
-                <label for="description"
-                  >Descripción <span class="color-red">*</span>
-                </label>
-                <textarea
-                  rows="2"
-                  class="form-control"
-                  formControlName="description"
-                  id="description"
-                  placeholder="Descripción del producto..."
-                  [ngClass]="{
-                    'is-invalid':
-                      form.controls['description'].errors && submitted
-                  }"
-                >
-                </textarea>
-                <div *ngIf="form.controls['description'].errors && submitted">
-                  <small class="color-red"
-                    >Favor de ingresar una descripción válida</small
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description"
+                    >Descripción <span class="color-red">*</span></label
                   >
+                  <textarea
+                    rows="3"
+                    class="form-control"
+                    formControlName="description"
+                    id="description"
+                    placeholder="Descripción del producto..."
+                    [ngClass]="{
+                      'is-invalid':
+                        form.controls['description'].errors && submitted
+                    }"
+                  ></textarea>
+                  <div *ngIf="form.controls['description'].errors && submitted">
+                    <small class="color-red"
+                      >Favor de ingresar una descripción válida</small
+                    >
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- button  -->
-
-            <div class="form-button">
-              <button type="submit" class="btn btn-primary btn-form">
-                Guardar
+            <div class="form-group text-center mt-3">
+              <button type="submit" class="btn btn-secondary btn-edit">
+                Guardar cambios
               </button>
             </div>
           </form>
