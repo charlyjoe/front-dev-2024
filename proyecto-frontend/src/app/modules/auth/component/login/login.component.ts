@@ -40,9 +40,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/category');
-    } else {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/');
     }
   }
 
@@ -57,10 +55,11 @@ export class LoginComponent {
       this.authenticationService.login(loginFormValue).subscribe(
         (response: HttpResponse<LoginResponse>) => {
           if (response.body && response.body.token) {
+            console.log(response);
             const token = response.body.token;
             this.authenticationService.saveToken(token);
             this.authenticationService.addUserToLocalCache(response.body);
-            this.router.navigateByUrl('/category');
+            this.router.navigateByUrl('/');
             this.showLoading = false;
           } else {
             if (response.body === null) {

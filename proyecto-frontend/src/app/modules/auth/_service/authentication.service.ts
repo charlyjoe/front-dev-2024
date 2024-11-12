@@ -8,25 +8,32 @@ import { User } from '../_model/user';
 import { LoginResponse } from '../_model/login-response';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationService {
-
   private token: string | null;
   private loggedInUsername: string | null;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { 
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.token = '';
     this.loggedInUsername = '';
   }
 
-  public login(credenciales: {username?: string, password?: string}): Observable<HttpResponse<LoginResponse>> {
-    return this.http.post<LoginResponse>(`${api_dwb_uri}/login`, credenciales, { observe: 'response' });
+  public login(credenciales: {
+    username?: string;
+    password?: string;
+  }): Observable<HttpResponse<LoginResponse>> {
+    return this.http.post<LoginResponse>(`${api_dwb_uri}/login`, credenciales, {
+      observe: 'response',
+    });
   }
 
-  public register(user: User): Observable<{message: string}> {
-    return this.http.post<{message: string}>(`${api_dwb_uri}/user`, user);
+  public register(user: User): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${api_dwb_uri}/user`, user);
   }
 
   public logOut(): void {
@@ -83,6 +90,19 @@ export class AuthenticationService {
     } else {
       this.logOut();
       return false;
+    }
+    return false;
+  }
+
+  public isAdmin(): boolean {
+    this.loadToken();
+    if (this.token != null && this.token !== '') {
+      if (this.jwtHelper.decodeToken(this.token).sub != null || '') {
+        if (!this.jwtHelper.isTokenExpired(this.token)) {
+          this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
+          return this.loggedInUsername === 'admin';
+        }
+      }
     }
     return false;
   }
