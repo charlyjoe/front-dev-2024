@@ -24,12 +24,12 @@ export class CategoryComponent implements OnInit {
   swal = Swal;
   isActiveList: boolean = false;
   showAllCategories: boolean = false;
+  submitted = false;
 
   constructor(private service: CategoryService, private fb: FormBuilder) {
     this.categoryForm = this.fb.group({
       category: ['', Validators.required],
       tag: ['', Validators.required],
-      status: ['', Validators.required],
     });
   }
 
@@ -60,6 +60,7 @@ export class CategoryComponent implements OnInit {
       },
     });
   }
+
   toggleCategoryFilter(): void {
     this.showAllCategories = !this.showAllCategories;
     if (this.showAllCategories) {
@@ -86,6 +87,8 @@ export class CategoryComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitted = true;
+    if (this.categoryForm.invalid) return;
     if (this.category_id === 0) {
       this.onSubmitCreate();
     } else {
@@ -93,6 +96,7 @@ export class CategoryComponent implements OnInit {
     }
 
     this.category_id = 0;
+    this.submitted = false;
   }
 
   onSubmitCreate(): void {
@@ -108,7 +112,8 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  onSubmitUpdate() {
+  onSubmitUpdate(): void {
+    console.log(this.categoryForm.value);
     this.service
       .updateCategory(this.categoryForm.value, this.category_id)
       .subscribe({
@@ -123,7 +128,7 @@ export class CategoryComponent implements OnInit {
       });
   }
 
-  disableCategory(id: number) {
+  disableCategory(id: number): void {
     this.service.deleteCategory(id).subscribe({
       next: (v) => {
         this.resetCategories();
@@ -135,7 +140,7 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  enableCategory(id: number) {
+  enableCategory(id: number): void {
     this.service.activateCategory(id).subscribe({
       next: (v) => {
         this.resetCategories();
@@ -147,8 +152,16 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  updateCategory(id: number) {
-    this.category_id = id;
+  updateCategory(category: Category): void {
+    this.category_id = category.category_id;
+    this.categoryForm.reset();
+    this.categoryForm.controls['category'].setValue(category.category);
+    this.categoryForm.controls['tag'].setValue(category.tag);
+  }
+
+  createCategory(): void {
+    this.category_id = 0;
+    this.categoryForm.reset();
   }
 
   resetCategories() {

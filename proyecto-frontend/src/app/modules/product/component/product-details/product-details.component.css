@@ -1,0 +1,48 @@
+.carousel-del {
+  width: 100%;
+}
+.carousel-inner img {
+  object-fit: cover;
+}
+
+.carousel-del .btn {
+  max-width: 80%;
+}
+
+.carousel-indicators .indicator {
+  background-color: #333;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%);
+}
+
+.card-header {
+  background-color: #393e46;
+}
+.card {
+  background-color: #393e46;
+  color: white;
+  border: white 3px solid;
+}
+
+table {
+  background-color: #393e46;
+  color: white;
+  border: white 3px solid;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  background-color: #393e46 !important;
+  color: white;
+}
+
+.card-body-product {
+  background-color: #393e46;
+  color: white;
+}
