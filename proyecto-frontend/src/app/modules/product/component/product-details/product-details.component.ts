@@ -85,7 +85,6 @@ export class ProductDetailsComponent {
     this.productService.getProduct(this.gtin).subscribe({
       next: (v) => {
         this.product = v;
-        console.log(this.product);
         this.getProductImages();
       },
       error: (e) => {
