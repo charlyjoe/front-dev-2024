@@ -10,6 +10,7 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ 
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -100,7 +101,6 @@
 
 .body {
   font-family: Arial, sans-serif;
-  padding: 100px 300px;
   min-height: 100vh;
   max-width: 100vw;
   background-color: #222831 !important;
@@ -7583,7 +7583,6 @@ fieldset:disabled .btn {
   width: 75% !important;
 }
 
-
 .w-auto {
   width: auto !important;
 }
@@ -11646,7 +11645,7 @@ fieldset:disabled .btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px  !important;
+  max-width: 1200px !important;
   margin: 0 auto;
   padding: 20px;
 }
@@ -11663,9 +11662,10 @@ fieldset:disabled .btn {
 .contenido-texto {
   flex: 2;
   padding: 20px;
-  background-color: #212529;
+  background-color: #222831;
   color: white;
   border-radius: 8px;
+  border: 1px solid white;
 }
 
 /* Estilo para los íconos de control del carrusel */

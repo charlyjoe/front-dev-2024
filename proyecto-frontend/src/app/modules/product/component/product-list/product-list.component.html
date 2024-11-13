@@ -1,7 +1,7 @@
 <div class="body">
   <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
-      <a class="navbar-brand">Tilinify</a>
+      <a class="navbar-brand" href="/">Tilinify</a>
       <button
         class="navbar-toggler navbar-toggler-right"
         type="button"
@@ -16,13 +16,24 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ms-auto my-2 my-lg-0">
           <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/category">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/product"
+              >Productos-Admin</a
+            >
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#services">Servicios</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/catalog">Productos</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!isLoggedIn">
             <a class="nav-link" href="/login">Iniciar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" (click)="logout()">Cerrar sesión</a>
           </li>
           <li class="nav-item">
             <a class="nav-link"><i class="bi bi-cart"></i> </a>
@@ -43,7 +54,32 @@
     </div>
   </header>
 
-  <!-- Section -->
+  <div class="container px-4 px-lg-5 mt-5">
+    <div class="dropdown my-4 text-center">
+      <button
+        class="btn dropdown-toggle filter-button"
+        type="button"
+        id="filterDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Filtrar por categoría
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+        <li *ngFor="let category of categories; let i = index">
+          <a
+            class="dropdown-item"
+            (click)="getProductsByCategory(category.category_id)"
+            >{{ category.category }}</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" (click)="getActiveProducts()">Todas</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <section class="py-4">
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row justify-content-center">
@@ -51,7 +87,7 @@
           *ngFor="let product of products; let i = index"
           class="col-lg-4 mb-3"
         >
-          <div class="card h-100" (click)="redirect(product.gtin)">
+          <div class="card h-100">
             <!-- Product image -->
             <img
               class="card-img-top"
@@ -61,6 +97,7 @@
                   : './assets/no-product-image.png'
               "
               alt="Imagen del producto"
+              (click)="redirect('/item/' + product.gtin)"
             />
 
             <!-- Product details -->
@@ -74,7 +111,14 @@
             <!-- Product actions -->
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center">
-                <a class="btn btn-outline-dark mt-auto" (click)="redirect('')"
+                <a
+                  class="btn btn-outline-dark mt-auto mb-2 btn-size"
+                  (click)="redirect('/item/' + product.gtin)"
+                  >Ver detalles</a
+                >
+                <a
+                  class="btn btn-outline-dark mt-auto btn-size"
+                  (click)="addToCart(product.gtin)"
                   >Agregar al carrito</a
                 >
               </div>

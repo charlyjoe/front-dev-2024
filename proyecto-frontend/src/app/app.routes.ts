@@ -7,6 +7,8 @@ import { HomeComponent } from './modules/product/component/home/home.component';
 import { authenticationGuard } from './modules/auth/authentication.guard';
 import { ProductListComponent } from './modules/product/component/product-list/product-list.component';
 import { ProductItemComponent } from './modules/product/component/product-item/product-item.component';
+import { InvoiceComponent } from './modules/invoice/component/invoice/invoice.component';
+import { InvoiceDetailComponent } from './modules/invoice/component/invoice-detail/invoice-detail.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -33,6 +35,11 @@ export const routes: Routes = [
   {
     path: 'item/:gtin',
     component: ProductItemComponent,
+    canActivate: [authenticationGuard],
+  },
+  {
+    path: 'invoice',
+    component: InvoiceComponent,
     canActivate: [authenticationGuard],
   },
 ];

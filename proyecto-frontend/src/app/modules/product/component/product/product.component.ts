@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Category } from '../../_model/category';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../../auth/_service/authentication.service';
+
 
 @Component({
   selector: 'app-product',
@@ -29,12 +31,15 @@ export class ProductComponent implements OnInit {
   isActiveList: boolean = false;
   showAllProducts: boolean = false;
   submitted = false;
+  isLoggedIn: boolean;
+  isAdmin: boolean;
 
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router, 
+    private authService: AuthenticationService,
   ) {
     this.form = this.fb.group({
       product: ['', [Validators.required]],
@@ -44,6 +49,14 @@ export class ProductComponent implements OnInit {
       stock: [0, [Validators.required, Validators.pattern('^[0-9]*$')]],
       category_id: [0, [Validators.required]],
     });
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+  }
+
+  logout(): void {
+    this.authService.logOut();
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
   }
 
   successMessage(message: string) {
