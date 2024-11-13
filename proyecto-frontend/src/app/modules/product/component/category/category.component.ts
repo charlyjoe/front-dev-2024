@@ -9,6 +9,8 @@ import { Category } from '../../_model/category';
 import { CategoryService } from '../../_service/category.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { AuthenticationService } from '../../../auth/_service/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category',
@@ -25,14 +27,23 @@ export class CategoryComponent implements OnInit {
   isActiveList: boolean = false;
   showAllCategories: boolean = false;
   submitted = false;
+  isLoggedIn: boolean;
+  isAdmin: boolean;
 
-  constructor(private service: CategoryService, private fb: FormBuilder) {
+  constructor(private service: CategoryService, private fb: FormBuilder, private authService: AuthenticationService, private router: Router) {
     this.categoryForm = this.fb.group({
       category: ['', Validators.required],
       tag: ['', Validators.required],
     });
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
   }
 
+  logout(): void {
+    this.authService.logOut();
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
+  }
   successMessage(message: string) {
     this.swal.fire({
       icon: 'success',

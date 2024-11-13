@@ -8,6 +8,9 @@ import { ProductImage } from '../../_model/product-image';
 import { Category } from '../../_model/category';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
+import { AuthenticationService } from '../../../auth/_service/authentication.service';
+import { CartService } from '../../../invoice/_service/cart.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-item',
@@ -21,18 +24,49 @@ export class ProductItemComponent {
   product: Product = new Product();
   categories: Category[] = [];
   productImages: ProductImage[] = [];
-
+  isLoggedIn: boolean;
+  isAdmin: boolean;
+  swal = Swal;
+  quantity: number = 0;
+  
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private productDetailsService: ProductDetailsService,
     private categoryService: CategoryService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthenticationService,
+    private cartService: CartService
+  ) {
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+  }
+
+  successMessage(message: string) {
+    this.swal.fire({
+      icon: 'success',
+      title: '¡Éxito!',
+      text: message,
+    });
+  }
+
+  errorMessage(message: string) {
+    this.swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: message,
+    });
+  }
 
   ngOnInit(): void {
     this.gtin = this.route.snapshot.paramMap.get('gtin');
     this.getProduct();
+  }
+
+  logout(): void {
+    this.authService.logOut();
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
   }
 
   async getProduct(): Promise<void> {
@@ -68,6 +102,19 @@ export class ProductItemComponent {
       },
       error: (e) => {
         console.log(e);
+      },
+    });
+  }
+
+  addToCart(quantity: number) {
+    this.cartService.addToCart({ gtin: this.gtin, quantity }).subscribe({
+      next: (v) => {
+        this.successMessage(v.message);
+        this.redirect('/catalog');
+      },
+      error: (e) => {
+        console.log(e);
+        this.errorMessage('No se pudo agregar el producto al carrito');
       },
     });
   }

@@ -6,6 +6,9 @@ import { Category } from '../../_model/category';
 import { DtoProductList } from '../../_dto/dto-product-list';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../../auth/_service/authentication.service';
+import { CartService } from '../../../invoice/_service/cart.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -18,19 +21,47 @@ export class ProductListComponent implements OnInit {
   products: DtoProductList[] = [];
   productImages: string[] = [];
   categories: Category[] = [];
+  isLoggedIn: boolean;
+  isAdmin: boolean;
+  swal = Swal;
 
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
     private productDetailsService: ProductDetailsService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthenticationService,
+    private cartService: CartService
+  ) {
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+  }
+
+  successMessage(message: string) {
+    this.swal.fire({
+      icon: 'success',
+      title: '¡Éxito!',
+      text: message,
+    });
+  }
+
+  errorMessage(message: string) {
+    this.swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: message,
+    });
+  }
 
   ngOnInit(): void {
     this.getActiveProducts();
     this.getActiveCategories();
   }
-
+  logout(): void {
+    this.authService.logOut();
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
+  }
   getActiveProducts(): void {
     this.productService.getActiveProducts().subscribe({
       next: (v) => {
@@ -50,6 +81,7 @@ export class ProductListComponent implements OnInit {
     this.categoryService.getActiveCategories().subscribe({
       next: (v) => {
         this.categories = v;
+        console.log(v);
       },
       error: (e) => {
         console.log(e);
@@ -70,7 +102,34 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  redirect(gtin: string) {
-    this.router.navigate(['/item', gtin]);
+  getProductsByCategory(category_id: number) {
+    this.productService.getProductsByCategory(category_id).subscribe({
+      next: (v) => {
+        this.products = v;
+        this.productImages = Array(this.products.length).fill('');
+        for (let i = 0; i < this.products.length; i++) {
+          this.getProductImage(this.products[i].product_id, i);
+        }
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+  }
+
+  addToCart(gtin: string) {
+    this.cartService.addToCart({ gtin, quantity: 1 }).subscribe({
+      next: (v) => {
+        this.successMessage(v.message);
+      },
+      error: (e) => {
+        console.log(e);
+        this.errorMessage('No se pudo agregar el producto al carrito');
+      },
+    });
+  }
+
+  redirect(url: string) {
+    this.router.navigate([url]);
   }
 }

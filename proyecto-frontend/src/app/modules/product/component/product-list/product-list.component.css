@@ -11224,3 +11224,39 @@ fieldset:disabled .btn {
     color: #6c757d;
   }
 }
+.filter-button {
+  background-color: black !important;
+  color: white !important;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.filter-button:hover {
+  background-color: #444 !important;
+  color: white !important;
+  border-color: #ddd;
+}
+
+.dropdown-menu {
+  background-color: #333;
+  border: none;
+}
+
+.dropdown-menu .dropdown-item {
+  color: white;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #444;
+  color: #ddd;
+}
+
+/* hacer clase para botones con el mismo tamaño */
+
+.btn-size {
+  width: 100%;
+  padding: 10px 20px;
+  
+}
