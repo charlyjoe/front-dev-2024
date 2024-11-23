@@ -215,4 +215,7 @@ export class ProductComponent implements OnInit {
   redirect(gtin: string) {
     this.router.navigate(['/product', gtin]);
   }
+  goCart(): void {
+    this.router.navigate(['/cart']);
+  }
 }

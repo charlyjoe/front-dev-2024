@@ -35,8 +35,8 @@
           <li class="nav-item" *ngIf="isLoggedIn">
             <a class="nav-link" (click)="logout()">Cerrar sesión</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link"><i class="bi bi-cart"></i> </a>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link"><i class="bi bi-cart" (click)="goCart()"></i> </a>
           </li>
         </ul>
       </div>
@@ -55,7 +55,9 @@
   </header>
 
   <div class="container px-4 px-lg-5 mt-5">
-    <div class="dropdown my-4 text-center">
+    <div
+      class="dropdown my-4 text-center d-flex justify-content-center align-items-center"
+    >
       <button
         class="btn dropdown-toggle filter-button"
         type="button"
@@ -63,32 +65,39 @@
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        Filtrar por categoría
+        Filtrar por categorías
       </button>
       <ul class="dropdown-menu" aria-labelledby="filterDropdown">
         <li *ngFor="let category of categories; let i = index">
-          <a
-            class="dropdown-item"
-            (click)="getProductsByCategory(category.category_id)"
-            >{{ category.category }}</a
-          >
+          <a class="dropdown-item" (click)="getProductsByCategory(category)">{{
+            category.category
+          }}</a>
         </li>
         <li>
           <a class="dropdown-item" (click)="getActiveProducts()">Todas</a>
         </li>
       </ul>
+
+      <h5>
+        <span class="badge bg-secondary ms-3">{{ selectedCategory }} </span>
+      </h5>
     </div>
   </div>
 
   <section class="py-4">
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row justify-content-center">
+        <div *ngIf="products.length === 0" class="no-products">
+          <div class="alert-message text-center">
+            <h4>No hay productos en esta categoría</h4>
+          </div>
+        </div>
+
         <div
           *ngFor="let product of products; let i = index"
           class="col-lg-4 mb-3"
         >
           <div class="card h-100">
-            <!-- Product image -->
             <img
               class="card-img-top"
               [src]="
@@ -100,7 +109,6 @@
               (click)="redirect('/item/' + product.gtin)"
             />
 
-            <!-- Product details -->
             <div class="card-body p-4">
               <div class="text-center">
                 <h5 class="fw-bolder">{{ product.product }}</h5>
@@ -108,16 +116,15 @@
               </div>
             </div>
 
-            <!-- Product actions -->
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
               <div class="text-center">
                 <a
-                  class="btn btn-outline-dark mt-auto mb-2 btn-size"
+                  class="btn btn-outline-secondary mt-auto mb-2 btn-size"
                   (click)="redirect('/item/' + product.gtin)"
                   >Ver detalles</a
                 >
                 <a
-                  class="btn btn-outline-dark mt-auto btn-size"
+                  class="btn btn-dark mt-auto btn-size"
                   (click)="addToCart(product.gtin)"
                   >Agregar al carrito</a
                 >
