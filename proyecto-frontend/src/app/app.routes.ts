@@ -9,6 +9,8 @@ import { ProductListComponent } from './modules/product/component/product-list/p
 import { ProductItemComponent } from './modules/product/component/product-item/product-item.component';
 import { InvoiceComponent } from './modules/invoice/component/invoice/invoice.component';
 import { CartComponent } from './modules/invoice/component/cart/cart.component';
+import { InvoiceDetailComponent } from './modules/invoice/component/invoice-detail/invoice-detail.component';
+
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -45,6 +47,11 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
+    canActivate: [authenticationGuard],
+  },
+  {
+    path: 'invoice/:id',
+    component: InvoiceDetailComponent,
     canActivate: [authenticationGuard],
   },
 ];

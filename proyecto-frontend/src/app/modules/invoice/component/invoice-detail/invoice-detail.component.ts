@@ -3,19 +3,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Invoice } from '../../_model/invoice';
 import Swal from 'sweetalert2';
 import { InvoiceService } from '../../_service/invoice.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-invoice-detail',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './invoice-detail.component.html',
   styleUrl: './invoice-detail.component.css',
 })
 export class InvoiceDetailComponent {
-  id: number = 0; // invoice id
+  id: number = 0;
   invoice: Invoice = new Invoice();
 
-  loading = false; // loading request
+  loading = false;
   swal = Swal;
 
   constructor(
@@ -54,5 +55,9 @@ export class InvoiceDetailComponent {
         this.loading = false;
       },
     });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/invoice']);
   }
 }

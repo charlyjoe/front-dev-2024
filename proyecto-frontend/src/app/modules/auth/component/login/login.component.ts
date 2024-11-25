@@ -51,6 +51,8 @@ export class LoginComponent {
       password: string;
     };
 
+    console.log(loginFormValue);
+
     this.subscriptions.push(
       this.authenticationService.login(loginFormValue).subscribe(
         (response: HttpResponse<LoginResponse>) => {

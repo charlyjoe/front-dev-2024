@@ -24,6 +24,9 @@
             >
           </li>
           <li class="nav-item">
+            <a class="nav-link" *ngIf="!isAdmin" href="/invoice">Facturas</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#services">Servicios</a>
           </li>
           <li class="nav-item">
@@ -36,7 +39,9 @@
             <a class="nav-link" (click)="logout()">Cerrar sesión</a>
           </li>
           <li class="nav-item" *ngIf="isLoggedIn">
-            <a class="nav-link"><i class="bi bi-cart" (click)="goCart()"></i> </a>
+            <a class="nav-link"
+              ><i class="bi bi-cart" (click)="goCart()"></i>
+            </a>
           </li>
         </ul>
       </div>
@@ -95,7 +100,7 @@
 
         <div
           *ngFor="let product of products; let i = index"
-          class="col-lg-4 mb-3"
+          class="col-lg-4 mb-5"
         >
           <div class="card h-100">
             <img

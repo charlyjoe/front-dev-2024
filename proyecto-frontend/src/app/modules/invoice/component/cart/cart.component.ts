@@ -109,4 +109,7 @@ export class CartComponent {
       0
     );
   }
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
 }

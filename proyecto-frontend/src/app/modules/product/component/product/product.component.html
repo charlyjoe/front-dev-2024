@@ -23,6 +23,9 @@
             <a class="nav-link"  *ngIf="isAdmin" href="/product">Productos-Admin</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" *ngIf="!isAdmin" href="/invoice">Facturas</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#services">Servicios</a>
           </li>
           <li class="nav-item"><a class="nav-link" href="/catalog">Productos</a></li>

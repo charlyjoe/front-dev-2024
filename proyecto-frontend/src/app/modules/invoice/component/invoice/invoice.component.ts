@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPhotoEditorModule } from 'ngx-photo-editor';
 import { RouterModule } from '@angular/router';
+import { AuthenticationService } from '../../../auth/_service/authentication.service';
+
 
 @Component({
   selector: 'app-invoice',
@@ -21,8 +23,13 @@ export class InvoiceComponent {
   current_date = new Date(); 
   loading = false; 
   swal = Swal; 
+  isLoggedIn: boolean;
+  isAdmin: boolean;
 
-  constructor(private invoiceService: InvoiceService, private router: Router) {}
+  constructor(private invoiceService: InvoiceService, private router: Router, private authService: AuthenticationService,) {
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.isAdmin = this.authService.isAdmin();
+  }
 
   ngOnInit() {
     this.getInvoices();
@@ -45,5 +52,13 @@ export class InvoiceComponent {
 
   showInvoice(id: number) {
     this.router.navigate(['invoice/' + id]);
+  }
+  logout(): void {
+    this.authService.logOut();
+    this.isLoggedIn = false;
+    this.router.navigate(['/']);
+  }
+  goCart(): void {
+    this.router.navigate(['/cart']);
   }
 }

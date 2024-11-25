@@ -10,10 +10,11 @@
 .title {
   margin-bottom: 5vh !important;
 }
-.card {
+.card-container {
+  max-width: 1200px;
   margin: auto !important;
-  max-width: 1200px !important;
-  width: 90% !important;
+}
+.card {
   box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
   border-radius: 1rem !important;
   border: transparent !important;
@@ -148,4 +149,15 @@ a:hover {
   background-repeat: no-repeat !important;
   background-position-x: 95% !important;
   background-position-y: center !important;
+}
+
+.btn-return {
+  width: 200px !important;
+  border-radius: 10px !important;
+}
+
+.close-icon {
+  color: red !important;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
