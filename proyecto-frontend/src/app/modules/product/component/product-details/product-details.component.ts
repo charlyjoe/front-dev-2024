@@ -188,4 +188,7 @@ export class ProductDetailsComponent {
   redirect(url: string) {
     this.router.navigate([url]);
   }
+  goCart(): void {
+    this.router.navigate(['/cart']);
+  }
 }

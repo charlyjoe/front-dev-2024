@@ -4,18 +4,15 @@ import { Observable } from 'rxjs';
 import { api_dwb_uri } from '../../../shared/api-dwb-uri';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InvoiceService {
+  private source = '/invoice';
 
-  private source = "/invoice";
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   getInvoice(id: number): Observable<any> {
-    return this.http.get(api_dwb_uri + this.source + "/" + id);
+    return this.http.get(api_dwb_uri + this.source + '/' + id);
   }
 
   getInvoices(): Observable<any> {
@@ -23,5 +20,7 @@ export class InvoiceService {
   }
 
   /* REQUERIMIENTO 4. Implementar servicio Invoice - función generateInvoice() */
-  generateInvoice() {}
+  generateInvoice() {
+    return this.http.post(api_dwb_uri + this.source, '');
+  }
 }

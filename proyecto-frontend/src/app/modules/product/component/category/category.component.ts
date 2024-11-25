@@ -182,4 +182,7 @@ export class CategoryComponent implements OnInit {
       this.getCategories();
     }
   }
+  goCart(): void {
+    this.router.navigate(['/cart']);
+  }
 }

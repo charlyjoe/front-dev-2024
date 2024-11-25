@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
 import { AuthenticationService } from '../../../auth/_service/authentication.service';
+import { ProductService } from '../../_service/product.service';
+import { ProductDetailsService } from '../../_service/product-details.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 @Component({
@@ -26,5 +28,9 @@ export class HomeComponent {
     this.authService.logOut();
     this.isLoggedIn = false;
     this.router.navigate(['/']);
+  }
+
+  goCart(): void {
+    this.router.navigate(['/cart']);
   }
 }

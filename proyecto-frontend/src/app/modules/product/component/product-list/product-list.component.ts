@@ -24,6 +24,7 @@ export class ProductListComponent implements OnInit {
   isLoggedIn: boolean;
   isAdmin: boolean;
   swal = Swal;
+  selectedCategory: string = 'Todas';
 
   constructor(
     private categoryService: CategoryService,
@@ -63,6 +64,7 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/']);
   }
   getActiveProducts(): void {
+    this.selectedCategory = 'Todas';
     this.productService.getActiveProducts().subscribe({
       next: (v) => {
         this.products = v;
@@ -102,8 +104,9 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  getProductsByCategory(category_id: number) {
-    this.productService.getProductsByCategory(category_id).subscribe({
+  getProductsByCategory(category: Category) {
+    this.selectedCategory = category.category;
+    this.productService.getProductsByCategory(category.category_id).subscribe({
       next: (v) => {
         this.products = v;
         this.productImages = Array(this.products.length).fill('');
@@ -131,5 +134,8 @@ export class ProductListComponent implements OnInit {
 
   redirect(url: string) {
     this.router.navigate([url]);
+  }
+  goCart(): void {
+    this.router.navigate(['/cart']);
   }
 }

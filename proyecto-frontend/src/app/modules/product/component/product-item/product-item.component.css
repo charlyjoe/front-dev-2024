@@ -10,7 +10,7 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- 
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -6016,6 +6016,7 @@ fieldset:disabled .btn {
 
 .carousel {
   position: relative;
+  transition: none !important;
 }
 
 .carousel.pointer-event {
@@ -6024,7 +6025,8 @@ fieldset:disabled .btn {
 
 .carousel-inner {
   position: relative;
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   overflow: hidden;
 }
 .carousel-inner::after {
@@ -6035,13 +6037,11 @@ fieldset:disabled .btn {
 
 .carousel-item {
   position: relative;
-  display: none;
-  float: left;
-  width: 100%;
-  margin-right: -100%;
+  max-width: 300px;
+  max-height: 300px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  transition: transform 0.6s ease-in-out;
+  transition: none !important;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel-item {
@@ -6053,16 +6053,6 @@ fieldset:disabled .btn {
 .carousel-item-next,
 .carousel-item-prev {
   display: block;
-}
-
-.carousel-item-next:not(.carousel-item-start),
-.active.carousel-item-end {
-  transform: translateX(100%);
-}
-
-.carousel-item-prev:not(.carousel-item-end),
-.active.carousel-item-start {
-  transform: translateX(-100%);
 }
 
 .carousel-fade .carousel-item {
@@ -6080,7 +6070,7 @@ fieldset:disabled .btn {
 .carousel-fade .active.carousel-item-end {
   z-index: 0;
   opacity: 0;
-  transition: opacity 0s 0.6s;
+  transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel-fade .active.carousel-item-start,
@@ -6105,7 +6095,7 @@ fieldset:disabled .btn {
   background: none;
   border: 0;
   opacity: 0.5;
-  transition: opacity 0.15s ease;
+  transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel-control-prev,
@@ -6121,6 +6111,8 @@ fieldset:disabled .btn {
   text-decoration: none;
   outline: 0;
   opacity: 0.9;
+  outline: none;
+  transform: none; /* Evita cualquier cambio brusco de escala */
 }
 
 .carousel-control-prev {
@@ -6187,7 +6179,7 @@ fieldset:disabled .btn {
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   opacity: 0.5;
-  transition: opacity 0.6s ease;
+  transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel-indicators [data-bs-target] {

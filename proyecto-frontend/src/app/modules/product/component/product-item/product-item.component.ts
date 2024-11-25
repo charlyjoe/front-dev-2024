@@ -107,6 +107,10 @@ export class ProductItemComponent {
   }
 
   addToCart(quantity: number) {
+    if (quantity < 1) {
+      this.errorMessage('La cantidad debe ser al menos 1.');
+      return;
+    }
     this.cartService.addToCart({ gtin: this.gtin, quantity }).subscribe({
       next: (v) => {
         this.successMessage(v.message);
@@ -121,5 +125,11 @@ export class ProductItemComponent {
 
   redirect(url: string) {
     this.router.navigate([url]);
+  }
+  goToProducts(): void {
+    this.router.navigate(['/catalog']); 
+  }
+  goCart(): void {
+    this.router.navigate(['/cart']);
   }
 }
