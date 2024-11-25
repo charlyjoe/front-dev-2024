@@ -1,0 +1,103 @@
+<div class="body-content">
+  <nav class="navbar navbar-expand-lg navbar-light py-3" id="mainNav">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="/">Tilinify</a>
+      <button
+        class="navbar-toggler navbar-toggler-right"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto my-2 my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/category">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/product"
+              >Productos-Admin</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="!isAdmin" href="/invoice">Facturas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/catalog">Productos</a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" href="/login">Iniciar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" (click)="logout()">Cerrar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link"
+              ><i class="bi bi-cart" (click)="goCart()"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="card">
+    <div class="card-header pt-4">
+      <div class="row">
+        <div class="col">
+          <h4 class="fw-bold">Facturas</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- loading  -->
+
+      @if(loading) {
+      <div class="text-center">
+        <img src="assets/loading.gif" class="img-loading" alt="" />
+      </div>
+      } @if(!loading && invoices.length == 0){
+      <div class="text-center table-empty">
+        <h4>No cuentas con facturas registradas</h4>
+      </div>
+      }@else {
+      <table class="table table-striped">
+        <thead>
+          <tr class="table-primary">
+            <th scope="col">No.</th>
+            <th scope="col">Factura</th>
+            <th scope="col">Monto</th>
+            <th scope="col">Fecha de compra</th>
+            <th scope="col">Detalles</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(invoice of invoices; track invoice.invoice_id; let i = $index ) {
+          <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ invoice.invoice_id }}</td>
+            <td>{{ invoice.total | currency : "USD" }}</td>
+            <td>{{ invoice.created_at | date : "dd/MM/yyyy" }}</td>
+
+            <td>
+              <button
+                class="btn btn-dark btn-sm d-flex align-items-center"
+                (click)="showInvoice(invoice.invoice_id)"
+              >
+                <i class="ph ph-eye icon-text-ul me-1"></i>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+    </div>
+  </div>
+</div>

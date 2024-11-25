@@ -1,0 +1,40 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Iniciar sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <span
+        class="help-block"
+        style="color: red"
+        *ngIf="fg.username.invalid && fg.username.touched"
+        >Ingresa un usuario<br></span
+      >
+      <label for="username">Usuario:</label>
+      <input
+        type="text"
+        id="username"
+        formControlName="username"
+        name="username"
+        placeholder="Ingresa un usuario"
+        required
+      />
+      <span
+        class="help-block"
+        style="color: red"
+        *ngIf="fg.password.invalid && fg.password.touched"
+        >Ingresa la contraseña.<br></span
+      >
+      <label for="password">Contraseña:</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        name="password"
+        placeholder="Ingresa la contraseña"
+        required
+      />
+
+      <button type="submit">Iniciar sesión</button>
+    </form>
+  </div>
+</div>

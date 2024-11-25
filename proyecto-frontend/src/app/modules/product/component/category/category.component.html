@@ -1,0 +1,210 @@
+<div class="category-container body">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="/">Tilinify</a>
+      <button
+        class="navbar-toggler navbar-toggler-right"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto my-2 my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/category">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  *ngIf="isAdmin" href="/product">Productos-Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Servicios</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/catalog">Productos</a></li>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" href="/login">Iniciar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" (click)="logout()">Cerrar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link"><i class="bi bi-cart" (click)="goCart()"></i> </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Categoria ID</th>
+        <th>Categoria</th>
+        <th>Etiqueta</th>
+        <th>Estatus</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.category_id }}</td>
+        <td>{{ category.category }}</td>
+        <td>{{ category.tag }}</td>
+        <td>
+          <div
+            [ngClass]="{
+              'status-circle': true,
+              'status-active': category.status === 1,
+              'status-inactive': category.status !== 1
+            }"
+            title="{{ category.status === 1 ? 'Activo' : 'Inactivo' }}"
+          ></div>
+        </td>
+        <td>
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Acciones
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li>
+                <a
+                  class="dropdown-item"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  (click)="updateCategory(category)"
+                  >Actualizar</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  (click)="
+                    category.status === 1
+                      ? disableCategory(category.category_id)
+                      : enableCategory(category.category_id)
+                  "
+                >
+                  {{ category.status === 1 ? "Desactivar" : "Activar" }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-between">
+    <button
+      type="button"
+      class="btn btn-outline-light"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+      (click)="createCategory()"
+    >
+      Nueva categoría
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-outline-light"
+      (click)="toggleCategoryFilter()"
+      style="margin-left: 30px"
+    >
+      {{ showAllCategories ? "Filtrar Activas" : "Filtrar Todas" }}
+    </button>
+  </div>
+
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-form">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            {{
+              category_id === 0 ? "Agregar categoría" : "Actualizar categoría"
+            }}
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="category" class="form-label"
+                >Categoría <span class="color-red">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="category"
+                formControlName="category"
+                [ngClass]="{
+                  'is-invalid':
+                    categoryForm.get('category')?.invalid && submitted
+                }"
+              />
+              <div
+                *ngIf="categoryForm.get('category')?.invalid && submitted"
+                class="invalid-feedback"
+              >
+                El campo categoría es obligatorio.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="tag" class="form-label"
+                >Etiqueta <span class="color-red">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="tag"
+                formControlName="tag"
+                [ngClass]="{
+                  'is-invalid': categoryForm.get('tag')?.invalid && submitted
+                }"
+              />
+              <div
+                *ngIf="categoryForm.get('tag')?.invalid && submitted"
+                class="invalid-feedback"
+              >
+                El campo etiqueta es obligatorio.
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

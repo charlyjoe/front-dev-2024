@@ -1,0 +1,160 @@
+<div class="body">
+  <!-- Navbar conservada de tu diseño inicial -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="/">Tilinify</a>
+      <button
+        class="navbar-toggler navbar-toggler-right"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto my-2 my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/category">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isAdmin" href="/product"
+              >Productos-Admin</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="!isAdmin" href="/invoice">Facturas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/catalog">Productos</a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" href="/login">Iniciar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" (click)="logout()">Cerrar sesión</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link"><i class="bi bi-cart" (click)="goCart()"></i> </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="py-5">
+    <div class="container px-4 px-lg-5 my-5 container-carrusel">
+      <div>
+        <div class="text-start mb-4">
+          <button
+            class="btn btn-outline-light flex-shrink-0"
+            type="button"
+            (click)="goToProducts()"
+          >
+            <i class="bi-arrow-left me-1"></i>
+            Regresar
+          </button>
+        </div>
+        <div class="carrusel">
+          <div
+            *ngIf="productImages && productImages.length > 0; else noImage"
+            id="carouselExampleIndicators"
+            class="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div *ngIf="productImages.length > 1" class="carousel-indicators">
+              <button
+                *ngFor="let item of productImages; let i = index"
+                type="button"
+                class="indicator"
+                data-bs-target="#carouselExampleIndicators"
+                [attr.data-bs-slide-to]="i"
+                [class.active]="i === 0"
+              ></button>
+            </div>
+            <div class="carousel-inner">
+              <div
+                *ngFor="let prod of productImages; let i = index"
+                class="carousel-item"
+                [class.active]="i === 0"
+              >
+                <img
+                  [src]="prod.image"
+                  class="d-block w-100"
+                  alt="Imagen del producto"
+                />
+              </div>
+            </div>
+            <button
+              *ngIf="productImages.length > 1"
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previo</span>
+            </button>
+            <button
+              *ngIf="productImages.length > 1"
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+          </div>
+          <ng-template #noImage>
+            <img
+              src="./assets/no-product-image.png"
+              class="d-block w-100"
+              alt="Sin imagen"
+            />
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="contenido-texto">
+        <div class="small mb-1">GTIN: {{ product.gtin }}</div>
+        <div class="display-5 fw-bolder">{{ product.product }}</div>
+        <div class="fs-5 mb-5">
+          <span>${{ product.price }}</span>
+        </div>
+        <p class="lead">{{ product.description }}</p>
+        <div class="d-flex">
+          <input
+            class="form-control text-center me-3"
+            id="inputQuantity"
+            type="number"
+            [max]="product.stock"
+            min="1"
+            [value]="0"
+            style="width: 5rem; height: 3rem;"
+            #quantity
+          />
+          <button
+            class="btn btn-outline-light flex-shrink-0"
+            type="button"
+            (click)="addToCart(quantity.valueAsNumber)"
+          >
+            <i class="bi-cart-fill me-1"></i>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
